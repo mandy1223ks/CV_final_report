@@ -1,0 +1,86 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage[pagenumbers]{cvpr}
+
+% Include other packages here, before hyperref.
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{CJKutf8}
+\usepackage{float}
+\usepackage{minted}
+\usepackage{mdframed}
+\usepackage{makecell}
+\usepackage{url}
+% \usepackage{epsfig}
+
+% If you comment hyperref and then uncomment it, you should delete
+% ReviewTempalte.aux before re-running LaTeX.
+% (Or just hit 'q' on the first LaTeX run, let it finish, and you
+%  should be clear).
+\usepackage[pagebackref,breaklinks,colorlinks]{hyperref}
+
+% \input{mysetup.tex}
+
+% \iccvfinalcopy % *** Uncomment this line for the final submission
+
+\def\cvprPaperID{9487} % *** Enter the CVPR Paper ID here
+\def\confName{CVPR}
+\def\confYear{2022}
+
+
+\begin{document}
+
+%%%%%%%%% TITLE
+\title{An Interesting Fighting Game using Style-based Generative Adversarial Network and Real-time Human Pose Estimation (Final)}
+
+\author{Lin-Yung Hsieh\\
+National Tsing Hua University\\
+{\tt\small s111061553@m111.nthu.edu.tw}
+% For a paper whose authors are all at the same institution,
+% omit the following lines up until the closing ``}''.
+% Additional authors and addresses can be added with ``\and'',
+% just like the second author.
+% To save space, use either the email address or home page, not both
+\and
+Jin-Cheng Jhang\\
+National Tsing Hua University\\
+{\tt\small s111061540@m111.nthu.edu.tw}
+\and
+Yu-Cheng Hsieh\\
+National Tsing Hua University\\
+{\tt\small s111061517@m111.nthu.edu.tw}
+\and
+Yi-Shan Lee\\
+National Tsing Hua University\\
+{\tt\small s110061623@m110.nthu.edu.tw}
+\and
+You-Ze Huang\\
+National Tsing Hua University\\
+{\tt\small s111033545s@m111.nthu.edu.tw}
+}
+
+\maketitle
+
+
+%------------------------------------------------------------------------
+
+\input{sec/00_abstract.tex}
+\input{sec/01_introduction.tex}
+\input{sec/02_relatedworks.tex}
+\input{sec/03_technicalpart.tex}
+\input{sec/04_experiments.tex}
+\input{sec/05_conclusion.tex}
+
+
+% {\small
+% \bibliographystyle{ieee_fullname}
+% \bibliography{mybib/conference,mybib/others}
+% }
+{\small
+\bibliographystyle{ieee_fullname}
+\bibliography{egbib}
+}
+
+\end{document}
