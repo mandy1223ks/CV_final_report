@@ -2,27 +2,34 @@
 % Sec 3.1: Technical part: Summary of the technical solution
 % Sec 3.2: Technical part: Details of the technical solution; you may want to decompose this section into several subsections; add figures to help your explanation.
 
-\input{fig/framework.tex}
-In this section, we present the framework for our game, which is depicted in Figure \ref{fig:framework}. Then we present the method of 
-We'll introduce \textbf{styleGAN}, \textbf{human pose estimation} and \textbf{game interface} in this section.
+% \input{fig/framework.tex}
+In this section, we present the framework for our game, which is depicted in Figure~\ref{fig:framework}. There are methods of detailed implementation.
 
 %-------------------------------------------------------------------------
-\subsection{StyleGAN}
+\subsection{StyleGAN} \label{StyleGAN}
 In order to mix the style of two real faces, we utilize the style encoding~\cite{richardson2021encoding}, style mixing, latent code interpolation and StyleGAN~\cite{karras2019style} \cite{karras2020analyzing} inference. Firstly, Style encoding aims to find a corresponding latent code $w$ from a real image $I$ such that the generated image $I'$ from $w$ is very similar to the original real image $I$ (you can regard this task as a reconstruction task). We use Style encoder to transform source images $I_{source}$ and target image $I_{source}$ to obtain corresponding latent vectors $w_{source}$ and $w_{target}$ and then use these latent vectors to do latent code interpolation.
+our style encoder architecture are shown in Figure~\ref{fig:styleEncoder}.
+
 
 
 Secondly, the main idea of latent code interpolation is to get a sequence of latent codes $[w_1,...,w_n]$ by interpolating different proportion of latent code $w_{source}$ and $w_{target}$, where $n$ is the length of sequence (e.g. $w_1$ consists of 95\% of $w_{source}$ and 5\% of $w_{target}$ ; $w_2$ consists of 90\% of $w_{source}$ and 10\% of $w_{target}$...)
 
 Finally, we will put results from latent code interpolation $[w_1,...,w_n]$ into StyleGAN model and the model outputs a sequence of images $[I_1,...,I_n]$ that mixed the style of $w_{source}$ and $w_{target}$. From the left part of the sequence $I_1,I_2,...$ preserves more information of $w_{source}$ while the right part of the sequence $I_n,I_{n-1},...$ preserves more information of $w_{target}$. In our game, we will change the player's face base on image sequences $[I_{source},I_1,I_2, ... ,I_n,I_{target}]$ whenever the player loses health points. 
 
-\subsection{Human pose estimation}
-% as shown in Figure~\ref{fig:medpose}
-% \input{fig/tec.tex}
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[scale=.5]{fig/pixel2style2pixel_pipeline.png}
+    \caption{Style Encoder architecture}
+    \label{fig:styleEncoder}
+\end{figure*}
 
-In order to reflect the human action in the game, we need a model that can predict real-time human pose. Besides, due to the immediacy we require in our game and the laptop we use without the high Compute Capability GPU, the model cannot be too computationally expensive. Therefore, we discard some state-of-the-art human pose estimation frameworks such as YOLOv7~\cite{Alpher06}. 
+
+\subsection{Human pose estimation} \label{HPE}
+
+In order to reflect the human action in the game, we need a model that can predict real-time human pose. Besides, due to the immediacy we require in our game and the laptop we use without the high Compute Capability GPU, the model cannot be too computationally expensive. Therefore, we discard some state-of-the-art human pose estimation frameworks such as YOLOv7~\cite{wang2022yolov7}. 
 
 \label{mediapipework}
-Instead, we select \textbf{mediapipe}\cite{lugaresi2019mediapipe} developed by \textbf{Google} to achieve real-time human pose estimation. It captures the real-time image from the camera and performs real-time single person human pose estimation, which can predict 33 key points as Figure \ref{fig:medpose} shows.
+Instead, we select \textbf{mediapipe}~\cite{lugaresi2019mediapipe} developed by \textbf{Google} to achieve real-time human pose estimation. It captures the real-time image from the camera and performs real-time single person human pose estimation, which can predict 33 key points as Figure~\ref{fig:medpose} shows.
 
 In order to predict two people's key points in one image, we crop the image into two halves. One person stands on the left side and the other stands on the right side. We perform their pose estimation individually. The position matrix of the left-side person is denoted as $M_{left}=[[x_1, y_1],[x_2, y_2],...,[x_{33}, y_{33}]]$ and the position matrix of the right-side person is denoted as $M_{right}=[[x_1, y_1],[x_2, y_2],...,[x_{33}, y_{33}]]$, where $x$ and $y$ are the positions of each key point. We can use these 33 key points to predict actions such as "raise right hand." Take "raising right hand" for example. When the position $y$ of key point 15, the right wrist, is larger than the position $y$ of key point 0, the nose, we can define the action as "raising right hand." This is how the pose-to-action step work.
 
@@ -37,9 +44,8 @@ In order to predict two people's key points in one image, we crop the image into
 
 %-------------------------------------------------------------------------
 \subsection{Game interface}
-
 In this part, we will need to create the GUI of this game.
-Besides, it is important to integrate the human pose estimation (Sec. ) and StyleGAN (Sec. ) into this game.
+Besides, it is important to integrate the StyleGAN \ref{StyleGAN} and  human pose estimation \ref{HPE} into this game.
 
 % At the beginning of the game, two players will first take a selfie through the camera, and the pictures will become the faces of the characters in the game and show on the screen. Next, when the game starts, we will receive the real-time actions from the previous part of human pose estimation (Sec. 2.2), then the game characters will do the corresponding actions on the screen.
 
@@ -47,15 +53,28 @@ Besides, it is important to integrate the human pose estimation (Sec. ) and Styl
 
 \subsubsection{Basic GUI}
 
-We use pygame module to implement this game and the main framework is refer to [?]. In the game GUI Figure[?], we have features such as health bar, background, music, character, etc. Two players can use keyboard to control the actions of the characters. The actions include move, jump, attack, and defense. When the character is being attack, his health will minus 10. However, if the character successfully defend, the health will only drop by 2. The attack and the defense are both having a cooldown time for 1 second. Whenever the health drops to zero, the game will end and restart a new match.
+We use \texttt{pygame} module to implement this game and the main framework is refer to \cite{GUI_framework}. In the game GUI shown in Figure \ref{fig:gui}, we have several features such as health bar, background, music, character, etc. Two players can use keyboard to control the actions of the game characters. The actions include move, jump, attack, and defense. When the character is being attack, his health point will minus 10. However, if the character successfully defend the attack, the health point will only drop by 2. Both the attack and the defense have a cool-down time for 1 second. Whenever the health drops to zero, the game will terminate and restart a new match.
 
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[scale=.1]{fig/game_gui.jpg}
+    \caption{GUI of our fighting game}
+    \label{fig:gui}
+\end{figure*}
 \subsubsection{Sprite}
 
-In order to let the game characters do an action on the screen, we drew a stickman sprite Figure[?] on our own. In the sprite, each row represents an action. For example, the fifth row stands for attack. When the player presses the attack button on the keyboard, the image in the fifth row will sequentially change from the first frame to the last frame. Therefore, we can see the attack action showing on the GUI.
+In order to let the game characters do an action on the screen, we drew a stickman sprite shown in Figure \ref{fig:sprite} on our own. In the sprite, each row represents an action. For example, the fifth row stands for "attack". When the player presses the attack button on the keyboard, the image in the fifth row will sequentially change from the first frame to the last frame rapidly. Therefore, we can see the attack action showing on the GUI.
 
-\subsubsection{Integrate with human pose estimation}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=.35]{fig/sprite.jpg}
+    \caption{Sprite for animation}
+    \label{fig:sprite}
+\end{figure}
 
-In this part, we need to replace the original keyboard input with the result from the human pose estimation. For the implementation detail, the actions come from the players will be stored in a boolean list and sent a function in the game interface. When any element of the list equals to True, we will regard it as the same meaning of having a keyboard input. In this way, we can integrate with the human pose estimation.
+\subsubsection{Integration with human pose estimation}
 
-\subsubsection{Integrate with StyleGAN}
-Before the game starts, we will receive a sequence of style images coming from the pre-calculation of StyleGAN. With these images
+In this part, we need to replace the original keyboard input with the result from the human pose estimation. For the implementation detail, the actions come from the players will be stored in a boolean list and sent to a function in the game interface. When any element of the list equals to True, we will regard it as the same meaning of having a keyboard input. In this way, we can successfully integrate with the human pose estimation.
+
+\subsubsection{Integration with StyleGAN}
+Before the game starts, we will receive a sequence of style images pre-calculated by StyleGAN. With these images, we will sequentially put them on the game character's face. Throughout this game, whenever the health point of the character drop by 10, the image will switch to the next one. Therefore, we achieve the effect that the game character's face will gradually change from the player's selfie to the target image.

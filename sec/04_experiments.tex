@@ -1,48 +1,35 @@
-\usepackage{titlesec}
-\newcommand{\subsubsubsection}[1]{\paragraph{#1}\mbox{}\\}
-\setcounter{secnumdepth}{4}
-\setcounter{tocdepth}{4}
 % the above things have to be place here, or all titles will compromise  --Jordan
 
 \section{Experiment}
-present here experimental results of the method you have implemented with plots, graphs, images and visualizations.
 
 \subsection{StyleGAN}
-In this section we will present result of style fusion of source image \textbf{Fig \ref{fig:source image}} and target image \textbf{Fig \ref{fig:target image}}. The fusion image are present in \textbf{Fig \ref{fig:stylechange}}. According to this result, there are several points that we can discuss. We will divide it into good result and bad result.
+In this section, we will present the result of the style fusion of the source image and target image in Figure \ref{fig:source target image}. The fusion image is present in Figure \ref{fig:stylechange}. According to this result, there are several points that we can discuss.
 
-\subsubsection{Good result}
-As you can see in \textbf{Fig \ref{fig:stylechange}}. The style interpolation of reconstructed source image and reconstructed target image is very successful. We can actually see the hairstyle, faces and background of reconstructed source image gradually fuse into those of reconstructed target image with smoothness. This result proof that interpolation of latent code in latent space actually leads to style fusion of image space.
+As shown in Figure \ref{fig:stylechange}, the style interpolation of the reconstructed source image and the reconstructed target image is very successful. We can actually see the hairstyle, faces and background of the reconstructed source image gradually fuse into those of the reconstructed target image with smoothness. The result proves that interpolation of latent code in latent space actually leads to style fusion of image space.
 
-\subsubsection{Bad result}
-According to \textbf{Fig \ref{fig:source image}}, \textbf{Fig \ref{fig:target image}} and \textbf{Fig \ref{fig:stylechange}}, the reconstruction of source image and target image is quite a failure. After some discussion, we find out some points that may lead to this terrible result.
+According to Figure \ref{fig:source target image} and \ref{fig:stylechange}, the reconstruction of the source image and the target image is quite a failure. After some discussion, we find out some points that may lead to this undesirable result. These points are listed below:
 
-\subsubsubsection {Face position problem}
-During implementation, we find that the reconstructed image will change globally if we slightly scale the original image. \textbf{Fig \ref{fig:face position problem}} can fully explain this problem. Both part of image contains original image and reconstructed image. The two images of left part of \textbf{Fig \ref{fig:face position problem}} is the same to \textbf{Fig \ref{fig:source image}} and upper left of \textbf{Fig \ref{fig:stylechange}}. We just cut a little fraction below the neck on the original image, the reconstructed image varies a lot (show in right part of \textbf{Fig \ref{fig:face position problem}}). To be more specific, compared to reconstructed image that do not cut, reconstructed image has more hair, wrinkles. Moreover, the hair, wrinkles have nothing to do with the the neck (cut place). After discussion, we attribute this result to that GAN based model are inherently very hard to control the generated result.
+\subsubsection {Face position problem}
+During implementation, we find that the whole reconstructed image will change greatly if we slightly scale the original image. Figure~\ref{fig:face position problem} can fully explain this problem. We divide the four images in Figure~\ref{fig:face position problem} into two groups. The leftmost two pictures are one group, and the rightmost two pictures are another group. Both groups of image contains original image(left one) and reconstructed image(right one). The two images of left part of Figure~\ref{fig:face position problem} is the same as left part of Figure \ref{fig:source target image} and upper left of Figure~\ref{fig:stylechange}. We just cut a little fraction below the neck on the original image Figure \ref{fig:source target image}, the reconstructed image varies a lot (shown in right part of Figure~\ref{fig:face position problem}). 
 
-\subsubsubsection {Origin Goal Problem}
-The main goal of StyleGAN based model is to use latent code to generate diverse results, while our goal is to use latent code to reconstruct original image, which is totally opposite. This might be a potential reason of our bad result.
+To be more specific, compared to the reconstructed image that does not cut, the reconstructed image has more hair and wrinkles. The hair and wrinkles, however, have nothing to do with the neck (cut place). We attribute this result to the fact that GAN-based models are inherently very hard to control the generated results.
 
-\subsubsubsection {Domain gap Problem}
-The style encoder is trained on FFHQ dataset, which consists mostly of Caucasian and African. Our source and target image are both Asian, which may lead to a domain gap problem.
+\subsubsection {Origin goal problem}
+The main goal of StyleGAN-based model is to generate diverse results using latent code, while our goal is to reconstruct original image using latent code, which is totally opposite. This might be a potential reason of our bad result.
 
-\subsubsubsection {Latent code space Problem}
-Losing information is inevitable when encoding the high dimensional images to low dimension latent vectors. Due to this, we will lose considerable information when we perform style encoding, leading to that StyleGAN generator can not generate images similar to original images.
+\subsubsection {Domain gap problem}
+The style encoder is trained on FFHQ dataset, which consists mostly of Caucasian and African. Our source and target images are both Asian, which may lead to a domain gap problem.
+
+\subsubsection {Latent code space problem}
+Losing information is inevitable when encoding the high dimensional images to low dimension latent vectors. Thus, we will lose considerable information when we perform style encoding. As a result, StyleGAN generator cannot generate images similar to original images.
 
 
-\begin{figure}
+\begin{figure}[ht]
 \centering
-    \begin{minipage}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=3cm]{fig/source_image.png}
-    \caption{source image}
-    \label{fig:source image}
-    \end{minipage}
-    \begin{minipage}[t]{0.48\textwidth}
-    \centering
-    \includegraphics[width=3cm]{fig/target_image.png}
-    \caption{target image}
-    \label{fig:target image}
-    \end{minipage}
+    \includegraphics[scale=.25]{fig/source_target_pair.png}
+    \caption{left: source image, right: target image}
+    \label{fig:source target image}
 \end{figure}
 
 \begin{figure}[ht]
@@ -53,18 +40,32 @@ Losing information is inevitable when encoding the high dimensional images to lo
     \label{fig:stylechange}
 \end{figure}
 
-\begin{figure}
-  \centering
-  \includegraphics[scale=0.05]{fig/couple_result.png}
-  \hspace{1in}
-  \includegraphics[scale=0.05]{fig/couple_result_cmp.png}
-  \caption{face position problem}
-  \label{fig:face position problem}
+\begin{figure}[ht]
+\centering
+    \centering
+    \includegraphics[scale=.3]{fig/cmp_pair.png}
+    \caption{face position problem}
+    \label{fig:face position problem}
 \end{figure}
 
 \subsection{Human Pose Estimation}
 
-We conduct an experiment on the accuracy of real-time human pose. The result is shown in Table \ref{table:eval}. We can see that we achieve an excellent performance in raising hand and punching, which achieves 100\% accuracy. As for the last action "hands together", the accuracy is less than other. The main reason is that when we perform this action, the key point position of our hands will get very close, leading to self-occlusion. Under such condition, we observe that the prediction result of mediapipe becomes more unstable, so the average accuracy drops to 75\%.
+The visualization result of human pose is shown in Figure \ref{fig:pose result}.
+
+\begin{figure}[h]
+\centering
+    \centering
+    \includegraphics[scale=.15]{fig/pose_result.png}
+    \caption{pose result}
+    \label{fig:pose result}
+\end{figure}
+\subsubsection{Implementation Detail}
+
+
+
+We conduct an experiment on the accuracy of real-time human pose. There are left person and right person. Each action we do 10 times. 
+\subsubsection{Evaluation Metric}
+The result is shown in Table \ref{table:eval}. We got an excellent performance in hand raising hand and punching, which achieves 100\% accuracy. As for the last action "hands together", the accuracy is less than other. The main reason is that when we perform this action, the key point position of our hands will get very close, leading to self-occlusion. Under such condition, we observe that the prediction result of mediapipe becomes more unstable, so the average accuracy drops to 75\%.
 
 \input{tab/pose2action.tex}
 % \begin{center}
@@ -86,3 +87,6 @@ We conduct an experiment on the accuracy of real-time human pose. The result is 
 % \captionof{table}{Evaluation table for pose2action conversion. \texttt{correct (L)} and \texttt{correct (R)} stands for the number of correctly detected case for left person and right person in the game interface respectively.}
 % \label{table:eval}
 % \end{center}
+
+\subsection{Game Interface}
+After integrating with the human pose estimation and StyleGAN, we can use our body motions to control the game character and show the corresponding animation on the screen. Also, when the game character is being attacked, the face of the character will indeed change to the next style image. Finally, we have a live demo on the oral presentation, and the game is working perfectly from it starts to it ends.

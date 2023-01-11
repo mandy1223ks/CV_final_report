@@ -1,21 +1,21 @@
-\begin{table}
+\begin{table}[t]
 \begin{center}
-\begin{tabular}{c|c|c|c|c}
+\begin{tabular}{l|ccc}
 \hline
-Action & Test Case & \thead{Correct (L)} & \thead{Correct (R)} & \thead{Accuracy  (\%)}\\
+Action & \thead{Correct (L)} & \thead{Correct (R)} & \thead{Accuracy  (\%)}\\
 \hline 
-raise left hand & 10 & 10 & 10 & \textbf{100}\\
+raise left hand  & 10 & 10 & \textbf{100}\\
 % \hline
-raise right hand & 10 & 10 & 10& \textbf{100}\\
+raise right hand  & 10 & 10& \textbf{100}\\
 % \hline
-punch left & 10 & 10 & 10 & \textbf{100}\\
+punch left & 10  & 10 & \textbf{100}\\
 % \hline
-punch right & 10 & 10 & 10 & \textbf{100}\\
+punch right  & 10 & 10 & \textbf{100}\\
 % \hline
-hands together & 10 & 8 & 7 & 75 \\
+hands together & 8 & 7 & 75 \\
 \hline
 \end{tabular}
-\captionof{table}{Evaluation table for pose2action conversion. \texttt{correct (L)} and \texttt{correct (R)} stands for the number of correctly detected case for left person and right person in the game interface respectively.}
+\captionof{table}{Evaluation table for pose2action conversion. \texttt{correct (L)} and \texttt{correct (R)} stand for the number of correctly detected case for left person and right person in the game interface respectively. We test each action for 10 times.}
 \label{table:eval}
 \end{center}
 \end{table}
